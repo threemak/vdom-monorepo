@@ -1,6 +1,6 @@
 graph TB
     %% Main steps with subgraphs
-    subgraph Core["1. Core Structure"]
+    subgraph Core["Core Structure"]
         VNode["Virtual Node Structure"]
         Props["Properties"]
         Children["Children"]
@@ -8,7 +8,7 @@ graph TB
         VNode --> Children
     end
 
-    subgraph Creation["2. Element Creation"]
+    subgraph Creation["Element Creation"]
         Create["createElement Function"]
         TypeHandle["Handle Types"]
         PropNorm["Normalize Props"]
@@ -18,7 +18,7 @@ graph TB
         Create --> ChildProcess
     end
 
-    subgraph Render["3. Rendering Pipeline"]
+    subgraph Render["Rendering Pipeline"]
         DOMCreate["Create DOM Nodes"]
         SetAttrs["Set Attributes"]
         EventBind["Bind Events"]
@@ -28,7 +28,7 @@ graph TB
         EventBind --> AppendKids
     end
 
-    subgraph Diff["4. Diffing"]
+    subgraph Diff["Diffing"]
         Compare["Compare Nodes"]
         TypeCheck["Check Types"]
         PropDiff["Diff Properties"]
@@ -38,7 +38,7 @@ graph TB
         PropDiff --> ChildDiff
     end
 
-    subgraph Patch["5. Patching"]
+    subgraph Patch["Patching"]
         Changes["Generate Changes"]
         UpdateQueue["Update Queue"]
         ApplyChanges["Apply Changes"]
@@ -46,7 +46,7 @@ graph TB
         UpdateQueue --> ApplyChanges
     end
 
-    subgraph State["6. State Management"]
+    subgraph State["State Management"]
         StateStore["State Container"]
         UpdateMech["Update Mechanism"]
         StateQueue["State Queue"]
@@ -56,7 +56,7 @@ graph TB
         StateQueue --> BatchUpdate
     end
 
-    subgraph Comp["7. Component System"]
+    subgraph Comp["Component System"]
         CompLife["Lifecycle Methods"]
         PropMan["Props Management"]
         StateMan["State Management"]
@@ -66,7 +66,7 @@ graph TB
         CompLife --> Context
     end
 
-    subgraph Events["8. Event System"]
+    subgraph Events["Event System"]
         EventDel["Event Delegation"]
         EventBub["Event Bubbling"]
         EventClean["Cleanup"]
@@ -74,7 +74,7 @@ graph TB
         EventBub --> EventClean
     end
 
-    subgraph Recon["9. Reconciliation"]
+    subgraph Recon["Reconciliation"]
         TreeDiff["Tree Diffing"]
         PatchGen["Patch Generation"]
         UpdateSched["Update Scheduling"]
@@ -82,7 +82,7 @@ graph TB
         PatchGen --> UpdateSched
     end
 
-    subgraph Batch["10. Batching System"]
+    subgraph Batch["Batching System"]
         CollectUp["Collect Updates"]
         Priority["Prioritize"]
         Execute["Execute Batch"]
@@ -90,7 +90,7 @@ graph TB
         Priority --> Execute
     end
 
-    subgraph Mount["11. Mount Process"]
+    subgraph Mount["Mount Process"]
         InitTree["Initialize Tree"]
         SetupState["Setup State"]
         AttachEvents["Attach Events"]
@@ -98,7 +98,7 @@ graph TB
         SetupState --> AttachEvents
     end
 
-    subgraph Update["12. Update Process"]
+    subgraph Update["Update Process"]
         TriggerUp["Trigger Update"]
         SchedRecon["Schedule Reconciliation"]
         ApplyUp["Apply Updates"]
@@ -114,7 +114,3 @@ graph TB
     Patch --> Update
     State --> Update
     Comp --> Update
-    Events --> Render
-    Recon --> Patch
-    Batch --> Update
-    Mount --> Render
