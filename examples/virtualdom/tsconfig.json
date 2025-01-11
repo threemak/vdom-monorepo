@@ -1,0 +1,49 @@
+{
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ],
+        "transpileOnly": true,
+        "esm": true,
+        "moduleTypes": {
+            "webpack.config.ts": "cjs",
+            // Globs are also supported with the same behavior as tsconfig "include"
+            "webpack-config-scripts/**/*": "cjs"
+        }
+    },
+    "compilerOptions": {
+        "outDir": "dist",
+        "noImplicitAny": false,
+        "module": "ESNext",
+        "target": "ESNext",
+        "typeRoots": [
+            "vdom3r/types"
+        ],
+        "lib": [
+            "ES2020",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "baseUrl": "./",
+        // Setup JSX
+        "jsx": "preserve",
+        "jsxImportSource": "jsx-runtime",
+        "strict": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "src",
+        "types"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

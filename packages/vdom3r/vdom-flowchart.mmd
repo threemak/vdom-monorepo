@@ -1,0 +1,42 @@
+flowchart TB
+    subgraph Application["Application State"]
+        State["State Changes"]
+    end
+
+    subgraph VirtualDOM["Virtual DOM Process"]
+        VDOM1["Virtual DOM Tree"]
+        VDOM2["New Virtual DOM Tree"]
+        diff["Diffing Algorithm"]
+        batch["Batch Updates"]
+    end
+
+    subgraph RealDOM["Real DOM"]
+        DOM["Actual DOM Tree"]
+        Updates["Minimal DOM Updates"]
+    end
+
+    State --> VDOM1
+    State --> VDOM2
+    VDOM1 --> diff
+    VDOM2 --> diff
+    diff --> batch
+    batch --> Updates
+    Updates --> DOM
+
+    %% Object representations
+    subgraph VDOMExample["Virtual DOM Object Example"]
+        direction TB
+        VNode["type: 'div'
+        props: { class: 'container' }
+        children: [...]"]
+    end
+
+    subgraph DiffingProcess["Diffing Process"]
+        direction LR
+        D1["1. Same Type?"]
+        D2["2. Props Changed?"]
+        D3["3. Children Different?"]
+    end
+
+    D1 --> D2
+    D2 --> D3

@@ -1,0 +1,59 @@
+{
+    "name": "vdom3r",
+    "version": "0.1.0",
+    "description": "Custom virtual DOM implementation",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "unpkg": "./dist/index.global.js",
+    "jsdelivr": "./dist/index.global.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs",
+            "default": "./dist/index.mjs"
+        },
+        "./jsx-runtime": {
+            "types": "./dist/jsx-runtime/index.d.ts",
+            "import": "./dist/jsx-runtime/index.mjs",
+            "require": "./dist/jsx-runtime/index.cjs",
+            "default": "./dist/jsx-runtime/index.mjs"
+        },
+        "./jsx-dev-runtime": {
+            "types": "./dist/jsx-dev-runtime/index.d.ts",
+            "import": "./dist/jsx-dev-runtime/index.mjs",
+            "require": "./dist/jsx-dev-runtime/index.cjs",
+            "default": "./dist/jsx-dev-runtime/index.mjs"
+        },
+        "./types": {
+            "types": "./dist/types/jsx.d.ts",
+            "import": "./dist/types/jsx.mjs",
+            "require": "./dist/types/jsx.cjs",
+            "default": "./dist/types/jsx.mjs"
+        }
+    },
+    "files": [
+        "dist",
+        "dist/types"
+    ],
+    "scripts": {
+        "start": "tsc",
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "typecheck": "tsc --noEmit"
+    },
+    "keywords": [
+        "vdom",
+        "jsx"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "glob": "^11.0.0",
+        "tsup": "^8.0.0",
+        "typescript": "^5.0.0"
+    }
+}

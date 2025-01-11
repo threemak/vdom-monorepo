@@ -1,0 +1,3 @@
+"use strict";var vdom3r=(()=>{var r=Object.defineProperty;var a=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var s=Object.prototype.hasOwnProperty;var d=(n,e)=>{for(var o in e)r(n,o,{get:e[o],enumerable:!0})},i=(n,e,o,l)=>{if(e&&typeof e=="object"||typeof e=="function")for(let t of p(e))!s.call(n,t)&&t!==o&&r(n,t,{get:()=>e[t],enumerable:!(l=a(e,t))||l.enumerable});return n};var y=n=>i(r({},"__esModule",{value:!0}),n);var x={};d(x,{Fragment:()=>m});var m=Symbol("Fragment");return y(x);})();
+if (typeof exports === 'object' && typeof module !== 'undefined') { module.exports = dom4t; }
+//# sourceMappingURL=dom.global.js.map

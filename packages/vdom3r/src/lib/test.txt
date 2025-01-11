@@ -1,0 +1,188 @@
+function createTextElement(value: string | number): TextVNode {
+    return {
+        type: "TEXT_ELEMENT",
+        props: {
+            nodeValue: value,
+        },
+        children: [],
+    };
+}
+// Create element virtual node
+function createElement(
+    type: string,
+    props: VNodeProps | null = null,
+    ...children: (VNode | string | number)[]
+): ElementVNode {
+    return {
+        type,
+        props: props || {},
+        children: children
+            .flat()
+            .filter((child) => child !== null && child !== undefined)
+            .map((child) =>
+                typeof child === "object" ? child : createTextElement(child),
+            ),
+    };
+}
+
+// Compare props between old and new nodes
+function propsChanged(oldProps: VNodeProps, newProps: VNodeProps): boolean {
+    const oldKeys = Object.keys(oldProps);
+    const newKeys = Object.keys(newProps);
+
+    if (oldKeys.length !== newKeys.length) return true;
+
+    return oldKeys.some((key) => {
+        if (key === "style" && typeof oldProps[key] === "object") {
+            return (
+                JSON.stringify(oldProps[key]) !== JSON.stringify(newProps[key])
+            );
+        }
+        return oldProps[key] !== newProps[key];
+    });
+}
+
+// Update DOM element properties
+function updateProps(
+    dom: HTMLElement,
+    oldProps: VNodeProps,
+    newProps: VNodeProps,
+) {
+    // Remove old props
+    Object.keys(oldProps).forEach((key) => {
+        if (!(key in newProps)) {
+            if (key.startsWith("on")) {
+                dom.removeEventListener(
+                    key.substring(2).toLowerCase(),
+                    oldProps[key],
+                );
+            } else {
+                dom.removeAttribute(key);
+            }
+        }
+    });
+
+    // Set new props
+    Object.entries(newProps).forEach(([key, value]) => {
+        if (oldProps[key] !== value) {
+            if (key === "style") {
+                Object.entries(value as object).forEach(
+                    ([styleKey, styleValue]) => {
+                        (dom as HTMLElement).style[styleKey as any] =
+                            styleValue as string;
+                    },
+                );
+            } else if (key.startsWith("on")) {
+                const eventName = key.substring(2).toLowerCase();
+                if (oldProps[key]) {
+                    dom.removeEventListener(eventName, oldProps[key]);
+                }
+                dom.addEventListener(eventName, value as EventListener);
+            } else {
+                dom.setAttribute(key, value as string);
+            }
+        }
+    });
+}
+
+// Create DOM element
+function createDom(vnode: VNode): HTMLElement | Text {
+    if (vnode.type === "TEXT_ELEMENT") {
+        const dom = document.createTextNode(String(vnode.props.nodeValue));
+        vnode.dom = dom;
+        return dom;
+    }
+
+    const element = document.createElement(vnode.type);
+    updateProps(element, {}, vnode.props);
+    vnode.children.forEach((child) => {
+        const childDom = createDom(child);
+        element.appendChild(childDom);
+    });
+    vnode.dom = element;
+    return element;
+}
+
+// Fixed diffing algorithm
+function diff(
+    oldVNode: VNode | null,
+    newVNode: VNode | null,
+    parentDom: HTMLElement,
+): HTMLElement | Text | null {
+    // If there's no old node and no new node, return null
+    if (!oldVNode && !newVNode) return null;
+
+    // If there's no old node, create new one
+    if (!oldVNode) {
+        const newDom = createDom(newVNode!);
+        parentDom.appendChild(newDom);
+        return newDom;
+    }
+
+    // If there's no new node, remove old one
+    if (!newVNode) {
+        if (oldVNode.dom) {
+            parentDom.removeChild(oldVNode.dom);
+        }
+        return null;
+    }
+
+    // If node types are different, replace completely
+    if (oldVNode.type !== newVNode.type) {
+        const newDom = createDom(newVNode);
+        if (oldVNode.dom) {
+            parentDom.replaceChild(newDom, oldVNode.dom);
+        }
+        return newDom;
+    }
+
+    // Update text nodes
+    if (newVNode.type === "TEXT_ELEMENT") {
+        const textDom = oldVNode.dom as Text;
+        if (newVNode.props.nodeValue !== oldVNode.props.nodeValue) {
+            textDom.nodeValue = String(newVNode.props.nodeValue);
+        }
+        newVNode.dom = textDom;
+        return textDom;
+    }
+
+    // Update regular elements
+    const oldDom = oldVNode.dom as HTMLElement;
+    newVNode.dom = oldDom;
+
+    if (propsChanged(oldVNode.props, newVNode.props)) {
+        updateProps(oldDom, oldVNode.props, newVNode.props);
+    }
+
+    // Diff children
+    const maxLength = Math.max(
+        oldVNode.children.length,
+        newVNode.children.length,
+    );
+    for (let i = 0; i < maxLength; i++) {
+        diff(
+            oldVNode.children[i] || null,
+            newVNode.children[i] || null,
+            oldDom,
+        );
+    }
+
+    return oldDom;
+}
+
+// Simple render function
+let previousVNode: VNode | null = null;
+
+function render(vnode: VNode, container: HTMLElement) {
+    if (!previousVNode) {
+        // First render
+        const dom = createDom(vnode);
+        container.appendChild(dom);
+    } else {
+        // Subsequent renders with diff
+        diff(previousVNode, vnode, container);
+    }
+    previousVNode = vnode;
+}
+
+export { createElement, render };

@@ -1,0 +1,3 @@
+var o=Symbol("Fragment");function s(r){return r.reduce((t,e)=>(e==null||e===!1||(Array.isArray(e)?t.push(...s(e)):typeof e=="number"||typeof e=="boolean"?t.push(String(e)):t.push(e)),t),[])}function i(r,t){let e=t||{},{key:l=null,ref:a=null,children:n,...f}=e,d=s(n?Array.isArray(n)?n:[n]:[]);return{type:r,props:{...f,ref:a||void 0},children:d,key:l,el:null}}var p=i;export{o as Fragment,p as jsx,p as jsxDEV,p as jsxs};
+if (typeof exports === 'object' && typeof module !== 'undefined') { module.exports = dom4t; }
+//# sourceMappingURL=index.mjs.map
